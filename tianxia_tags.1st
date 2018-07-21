@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- This file contains the definitions of all tag groups and tags that are used
+      throughout the Skeleton data files. These elements relied upon by numerous
+      other facets of the data files and must be processed first during compilation,
+      so they are placed in a file with a ".1st" extension.
+-->
+
+<document signature="Hero Lab Structure">
+
+  <!-- The "group" elements define tag groups that consist of an assortment of tags.
+        These tags can be assigned throughout the data files and referenced via scripts
+        and tag expressions to orchestrate all the behaviors you need.
+  -->
+
+  <!-- Helper group - general helper tags used internally only
+        This group is where you can put a variety of tags that don't really belong in
+        any other group - it's kind of a "miscellaneous" group. The key requirement is
+        that tags in this group should never be intended for access by the user, as
+        they are for internal use only. Another important detail is that you cannot
+        ever establish any ordering of things based on Helper tags, since any number
+        of Helper tags can be assigned to any particular thing.
+  -->
+  <group
+    id="Tianxia">
+    <value id="Move"/>      <!-- Identifies the Move tracker -->
+    <value id="Jianghu"/>   <!-- Identifies the Jiangyu tracker -->
+    <value id="Form"/>      <!-- Identifies a Kung Fu form -->
+    <value id="Tech"/>      <!-- Identifies a Kung Fu technique -->
+    <value id="Visible"/>   <!-- Used to reveal Kung Fu specific Tabs -->
+    </group>
+    
+  <group
+    id="Element">
+    <value id="Forest"/>  
+    <value id="Ghost"/>     
+    <value id="Iron"/>      
+    <value id="Lightning"/> 
+    <value id="Stone"/>    
+    <value id="Storm"/>    
+    </group>    
+
+  <group
+    id="Body">
+    <value id="Crane"/>    
+    <value id="Dragon"/>   
+    <value id="Monkey"/>    
+    <value id="Phoenix"/>  
+    <value id="Serpent"/>  
+    <value id="Tiger"/>    
+    </group>
+
+  <group
+    id="HasForm"
+    dynamic="yes">
+    </group>
+    
+  <group
+    id="HasTech"
+    dynamic="yes">
+    </group>
+
+  <group
+    id="IsForm">
+    <value id="Master"/>  
+    </group>
+                
+  <group
+    id="Technique">
+    <value id="Technique"/>  
+    <value id="Secret"/>  
+    <value id="Lost"/>     
+    </group>
+  
+  <group
+    id="Move">
+    <value id="Move"/>      <!-- Increments the Move tracker -->
+    </group>
+  
+  <group
+    id="Jianghu">
+    <value id="Rank"/>      <!-- Increments the Move tracker -->
+    </group>
+    
+  </document>

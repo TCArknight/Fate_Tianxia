@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the definitions of how the Editor should handle all the
+      various publicly accessible objects (i.e. component sets) within the game
+      system. A separate "editthing" elemenet is defined for each component set,
+      along with the appropriate details for how to configure each facet via
+      "inputthing" elements.
+-->
+
+<document signature="Hero Lab Data">
+
+  <!-- Form editthing -->
+  <editthing
+    compset="Form"
+    name="Kung Fu Form"
+    prefix="frm"
+    description="Similar to Stunts, Forms are displayed on the Kung Fu tab."
+    summary="Defines a Kung Fu form.">
+    <inputthing
+      name="Kung Fu Element"
+      helptext="Specify the Element that this Form belongs to.">
+      <it_tagpick group="Element" tag="?" require="yes" deftag="Forest"/>
+      </inputthing>
+    <inputthing
+      name="Kung Fu Body"
+      helptext="Specify the Body that this Form belongs to.">
+      <it_tagpick group="Body" tag="?" require="yes" deftag="Crane"/>
+      </inputthing>
+    <inputthing
+      name="Hide from Stunts?"
+      helptext="Specify whether this Form is hidden from display on the Stunts table.">
+      <it_tagcheck group="Hide" tag="Stunt"/>
+      </inputthing>
+    <inputthing
+      name="Focus Required?"
+      helptext="Specify whether this Form requires the user to specify a focus (e.g. Knowledge).">
+      <it_tagcheck group="User" tag="NeedDomain"/>
+      </inputthing>
+    
+    </editthing>
+    
+  <!-- Technique editthing -->
+  <editthing
+    compset="Tech"
+    name="Kung Fu Technique"
+    prefix="tec"
+    description="Similar to Stunts, Techniques are displayed on the Kung Fu tab."
+    summary="Defines a Kung Fu technique.">
+    <inputthing
+      name="Element Substyle"
+      helptext="Specify the Element that this Technique belongs to.">
+      <it_tagpick group="Element" tag="?" require="no"/>
+      </inputthing>
+    <inputthing
+      name="Body Substyle"
+      helptext="Specify the Body that this Technique belongs to.">
+      <it_tagpick group="Body" tag="?" require="no"/>
+      </inputthing>
+    <inputthing
+      name="Secret Technique?"
+      helptext="Specify whether this Technique is a Secret Technique for a particular style.<br><br>Style is selected from Element and Body substyle above.">
+      <it_tagcheck group="Technique" tag="Secret"/>
+      </inputthing>
+    <inputthing
+      name="Lost Technique?"
+      helptext="Specify whether this Technique is considered Lost.">
+      <it_tagcheck group="Technique" tag="Lost"/>
+      </inputthing>
+    <inputthing
+      name="Hide from Stunts?"
+      helptext="Specify whether this Form is hidden from display on the Stunts table.">
+      <it_tagcheck group="Hide" tag="Stunt"/>
+      </inputthing>
+    <inputthing
+      name="Focus Required?"
+      helptext="Specify whether this Form requires the user to specify a focus (e.g. Knowledge).">
+      <it_tagcheck group="User" tag="NeedDomain"/>
+      </inputthing>
+
+    </editthing>
+
+  </document>

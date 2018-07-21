@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="mecTianSet" name="Tianxia Setting" compset="Mechanics">
+    <usesource source="srcBlSiJa"/>
+    <eval phase="Initialize"><![CDATA[
+    herofield[acCampaign].text = "<Select Me>"
+
+    ~Assign Tianxia.Visible tag to reveal setting-specific Tabs
+    perform hero.assign[Tianxia.Visible]
+    ]]></eval>
+    <eval phase="Final" priority="12000" index="2"><![CDATA[~find the name of the Master A Form Advances
+var myName as string
+
+foreach pick in hero where "Advance.Notation & thingid.advMstFrm"
+  myName = eachpick.field[name].text
+  foreach pick in hero where "component.Form"
+    if (compare(eachpick.field[name].text, myName ) = 0 ) then
+      perform eachpick.assign[IsForm.Master]
+      endif
+    nexteach
+  nexteach
+  ]]></eval>
+    <eval phase="Traits" priority="20000" index="3"><![CDATA[~Adjust Refresh for KungFu Forms and Techniques
+var stuntcount as number
+var techcount as number
+var kfcount as number
+var initstunt as number
+
+~get the initial number of free stunts
+initstunt = herofield[acInStunt].value
+debug "Initial Stunts: " & initstunt
+
+~since each form and technique count as a stunt, add up number of ~actual stunts, not the forms and techniques.
+foreach pick in hero from Stunt
+  stuntcount += 1
+  nexteach
+debug "Stunts Spent: " & stuntcount
+
+~ get the number of Techniques + Forms
+foreach pick in hero from Form
+  kfcount += 1
+  nexteach
+debug "Forms: " & kfcount
+  
+foreach pick in hero from Tech
+  techcount += 1
+  nexteach
+debug "Techniques: " & techcount
+
+~we need to adjust the cost of the stunts since Form and Techniques
+~don't have a base cost.
+var costadjust as number
+var extratech as number
+
+~since supposed to be 1 technique per form, subtract forms from techniques
+extratech = techcount - kfcount
+
+debug "Extra Techniques: " & extratech
+
+~adjust refresh
+
+~Initial Stunts gain 1 technique
+var inidiff as number
+if (initstunt > stuntcount) then
+  inidiff += (initstunt - stuntcount)
+  debug "Difference: " & inidiff
+  techcount -= inidiff
+  endif
+
+costadjust += inidiff
+debug "Initial Stunts Cost Adjust: " & costadjust
+
+extratech = (extratech/2)
+costadjust += round(extratech, 0, 1) 
+debug "Cost Adjust: " & costadjust
+
+if (initstunt >= inidiff) then
+  if (techcount <= 0) then
+    costadjust = 0
+    endif
+  endif
+debug "Final Cost Adjust: " & costadjust
+
+~1 form + 1 Technique = 1 refresh; 2 techniques = 1 refresh
+herofield[acRefrStnt].value += kfcount + costadjust
+
+
+    ]]></eval>
+
+    </thing>
+
+    </document>

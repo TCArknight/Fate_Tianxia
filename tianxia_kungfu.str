@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the definitions of components associated with traits such as
+      attributes, skills, special abilities, etc.
+-->
+
+<document signature="Hero Lab Structure">
+
+  <!-- Form component
+        Each Martial Art Form derives from this component
+  -->
+  <component
+    id="Form"
+    name="Form"
+    autocompset="no"
+    panellink="kungfu">
+
+    <!-- Each skill needs its own identity tag so existing skills can be identified during advancement -->
+    <identity group="Form"/>
+    <identity group="HasForm"/>
+    <identity group="FrmMstr"/>
+
+    <!-- Track the skill on the actor -->
+    <eval index="1" phase="Setup" priority="500"><![CDATA[
+      perform forward[HasForm.?]
+
+      ~The form itself doesn't count as a Stunt. 
+      trustme
+      field[stRefCost].value -= 1
+      
+      ]]></eval>
+
+    <!--  -->
+    <eval index="2" phase="PreTraits" priority="100"><![CDATA[
+            
+      ~if no form selected, get out now
+      ~doneif (herofield[acRefrStnt].value < 2 )
+      
+      ~The form itself doesn't count as a Stunt. 
+      ~field[stRefCost] -= 1      
+      ~herofield[acRefrStnt].value -= 1
+      
+      ]]></eval>
+
+    <!-- Track the skill on the actor -->
+    <eval index="3" phase="Final" priority="15000"><![CDATA[
+
+      ~if not tagged as a Master of the form, get out now
+      doneif (tagis[IsForm.Master] <> 1 )
+      
+      field[livename].text = field[name].text & " (Master)"
+      perform forward[IsForm.Master]
+      perform forward[FrmMstr.?]
+                    
+      ]]></eval>
+      
+    </component>
+  
+  <component
+    id="FormHelp"
+    name="Kung Fu Form Helper">
+
+    <!-- Selection Tag Expressions -->
+    <field
+      id="frmFrmExpr"
+      name="Form Tag Expression"
+      type="derived"
+      maxlength="500">
+      </field>
+
+    </component>
+
+  <!-- Tech component
+        Each Martial Art Technique derives from this component
+  -->
+  <component
+    id="Tech"
+    name="Technique"
+    autocompset="no"
+    panellink="kungfu">
+
+    <!-- Each skill needs its own identity tag so existing skills can be identified during advancement -->
+    <identity group="Tech"/>
+    <identity group="HasTech"/>
+
+    <!-- Track the skill on the actor -->
+    <eval index="1" phase="Setup" priority="500"><![CDATA[
+      perform forward[HasTech.?]
+      
+      ~The technique itself doesn't count as a Stunt. 
+      trustme
+      field[stRefCost].value -= 1
+      ]]></eval>
+
+    </component>
+    
+  <component
+    id="TechHelp"
+    name="Kung Fu Technique Helper">
+
+    <!-- Selection Tag Expressions -->
+    <field
+      id="frmTecExpr"
+      name="Technique Tag Expression"
+      type="derived"
+      maxlength="500">
+      </field>
+
+    </component>
+        
+  <!-- Form - all skills derive from this compset -->
+  <compset
+    id="Form">
+    <compref component="Form"/>
+    <compref component="FormHelp"/>
+    <compref component="Stunt"/>
+    <compref component="Domain"/>
+    <compref component="CanAdvance"/>
+    </compset>
+
+  <!-- Form - all skills derive from this compset -->
+  <compset
+    id="Tech">
+    <compref component="Tech"/>
+    <compref component="TechHelp"/>
+    <compref component="Stunt"/>
+    <compref component="Domain"/>
+    <compref component="CanAdvance"/>
+    </compset>
+    
+  </document>

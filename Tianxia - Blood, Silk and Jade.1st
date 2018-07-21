@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document signature="Hero Lab Structure">
+  <loadonce key="Tianxia Blood_Silk_Jade"/>
+<!--
+
+March 1, 2015 - Thomas Clegg (TCArknight)
+-Created New
+
+-->
+
+  <!-- ============================================== -->
+  <!-- SOURCES                                        -->
+  <!-- ============================================== -->
+  <source
+    id="srcBlSiJa"
+    name="Blood, Silk and Jade"
+    selectable="yes"
+    parent="srcTianxia"
+    sortorder="10"
+    description="Content from the primary ruleset for Tianxia.">
+  </source>
+
+</document>

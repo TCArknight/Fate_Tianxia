@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- This file contains the definition of a traditional "statblock" output for the
+      game system. The statblock is defined as a dossier and then uses an assortment
+      of procedures to orchestrate the synthesis of the output.
+-->
+
+<document signature="Hero Lab Data">
+
+
+  <!-- Procedure sbname
+        Get the character's name, using a suitable default if unnamed. The name is
+        placed in the "name" text variable.
+
+        Outbound parameter: name
+
+  <procedure id="sbname" scripttype="synthesize"><![CDATA[
+    var name as string
+    if (empty(hero.actorname) = 0) then
+      name = hero.actorname
+    else
+      name = "Unnamed Character"
+      endif
+    ]]></procedure>
+  -->
+
+   
+  <!-- Procedure sbaspects
+        Output all of the aspects that satisfy the provided tag expression, reporting
+        the name and final value for each. The "tagexpr" text variable specifies the
+        constraints that must be satisfied for the list of traits.
+
+        Inbound parameter:  tagexpr
+
+  
+  <procedure id="sbaspects" scripttype="synthesize"><![CDATA[
+    var tagexpr as string
+    var ismore as number
+    ismore = 0
+    foreach pick in hero where tagexpr
+      if (ismore <> 0) then
+        append ", "
+        endif
+      append eachpick.field[name].text & @newline
+      ismore = 1
+      nexteach
+    append @newline
+    ]]></procedure>
+  -->
+
+  <!-- Procedure sbweapons
+        Output all of the weapons possessed by the character, listing equipped
+        weapons first and including attack values, damage, and ranges for eachpick.
+
+  <procedure id="sbweapons" scripttype="synthesize"><![CDATA[
+    var ismore as number
+    append @boldon & "Weapons/Attacks: " & @boldoff & @newline
+    ~output a list of all weapons (equipped first)
+    ismore = 0
+    foreach pick in hero where "component.WeaponBase" sortas Armory
+      ismore = 1
+      append "   " & eachpick.field[wpNetAtk].text & " - " & eachpick.field[name].text
+      append " - " & eachpick.field[wpDamage].text
+      if (eachpick.field[grIsEquip].value <> 0) then
+        append " (Equipped)"
+        endif
+      if (eachpick.tagis[component.WeapRange] <> 0) then
+        append " (Rng: " & eachpick.field[wpShort].text & "/" & eachpick.field[wpMedium].text & "/" & eachpick.field[wpLong].text & ")"
+        endif
+      append @newline
+      nexteach
+    ~if we have no weapons, output that fact
+    if (ismore = 0) then
+      append "   -none-" & @newline
+      endif
+    ]]></procedure>
+  -->
+  
+  <procedure id="sbskills" scripttype="synthesize"><![CDATA[
+    var ismore as number
+    var myrank as number
+    var rankCheck as number
+    append @newline & @boldon & "Skills: " & @boldoff 
+    ~output a list of all Skills with +1 or higher rating
+    ismore = 0
+    rankCheck = 8
+    
+    while (rankCheck > 0)
+      foreach pick in hero where "component.Skill"
+        myrank = eachpick.field[trtFinal].value
+      
+        if (myrank = rankCheck) then
+          if (ismore <> 0) then
+            append "; "
+            endif
+          append eachpick.field[shortname].text & " (+" & myrank & ")"
+          ismore = 1      
+          endif
+        
+        nexteach
+        rankCheck -= 1
+      loop
+      
+    ]]></procedure>
+
+  <procedure id="sbkungfu" scripttype="synthesize"><![CDATA[
+    var ismore as number
+    var jianghu as number
+    var myLen as number
+    var myForm as string
+    var trimmed as string
+    
+    ~get Jianghu rank from tracker
+    foreach pick in hero where "component.Tracker & Tianxia.Jianghu"
+      append @newline & @boldon & "Jianghu Rank: " & @boldoff 
+      append eachpick.field[trkUser].value & @newline
+      nexteach
+    
+    append @newline & @boldon & "Kung Fu Form: " & @boldoff 
+    
+    ~output a list of all Kungfu Forms
+    ismore = 0
+    
+    foreach pick in hero where "component.Form"
+      myForm = ""
+      trimmed = ""
+      myLen = 0
+      
+      ~ prettify form name
+      if (ismore <> 0) then
+        append ", "
+        endif      
+      
+      myForm = eachpick.field[name].text
+      myLen = length(myForm)   
+      ~trimmed = mid(myForm,6,myLen)
+       
+      append myForm & " Form"        
+      
+      ismore = 1
+      
+      nexteach
+
+    ~ Output Kungfu Techniques
+    ismore = 0
+    
+    append @newline & @boldon & "Techniques: " & @boldoff
+    foreach pick in hero where "component.Stunt & Tianxia.Tech"
+      myForm = ""
+      trimmed = ""
+      myLen = 0
+      
+      ~ prettify form name
+      if (ismore <> 0) then
+        append ", "
+        endif      
+      
+      myForm = eachpick.field[name].text
+      myLen = length(myForm)   
+      trimmed = mid(myForm,6,myLen)
+       
+      append trimmed        
+      
+      ismore = 1
+      
+      nexteach
+            
+    append @newline
+      
+    ]]></procedure>
+
+  <procedure id="sbstunts" scripttype="synthesize"><![CDATA[
+    var ismore as number
+
+    append @newline & @boldon & "Stunts: " & @boldoff 
+
+    ismore = 0
+    
+    foreach pick in hero where "component.Stunt & !Tianxia.Form & !Tianxia.Tech"
+      
+      if (ismore <> 0) then
+        append "; "
+        endif
+
+      append eachpick.field[name].text
+
+      ismore = 1      
+        
+      nexteach
+      
+    ]]></procedure>
+    
+
+  <!-- Procedure sbarmor
+        Output all of the armor possessed by the character, listing equipped gear
+        first and including the defense value for eachpick.
+
+  <procedure id="sbarmor" scripttype="synthesize"><![CDATA[
+    var ismore as number
+    append @boldon & "Armor: " & @boldoff & @newline
+    ~output the details of all armor (equipped first)
+    ismore = 0
+    foreach pick in hero where "component.Defense" sortas Armory
+      ismore = 1
+      append "   " & eachpick.field[defDefense].text & " - " & eachpick.field[name].text
+      if (eachpick.field[grIsEquip].value <> 0) then
+        append " (Equipped)"
+        endif
+      append @newline
+      nexteach
+    ~if we have no armor, output that fact
+    if (ismore = 0) then
+      append "   -none-" & @newline
+      endif
+    ]]></procedure>
+  -->
+
+  <!-- Define the statblock as a text-based dossier. The "synthesize" script actually
+        generates the output.
+  -->
+  <dossier
+    id="tstatblock"
+    name="Tianxia Character Statblock">
+    <dossier_text
+      styles="plain+html+bbcode"
+      grouping="statblock">
+      <synthesize><![CDATA[
+        var txt as string
+        var tagexpr as string
+
+        ~start by getting our name
+        var name as string
+        call sbname
+
+        ~output our name
+        append @boldon & "Name: " & @boldoff & name & @newline
+
+        ~append Refresh
+        append @newline & @boldon & "Refresh Rate: " & @boldoff & herofield[acFateRefR].value 
+        
+        ~get Fate Points from tracker
+        foreach pick in hero where "component.Tracker & thingid.trkFate & !Tianxia.Move & !Tianxia.Jianghu"
+          append @newline & @boldon & "Fate Points: " & @boldoff 
+          append eachpick.field[trkUser].value & @newline
+          nexteach 
+
+        ~get Movement from tracker
+        foreach pick in hero where "component.Tracker & Tianxia.Move"
+          append @newline & @boldon & "Movement: " & @boldoff 
+          append eachpick.field[trkUser].value & " Zones" & @newline
+          nexteach 
+
+        ~output aspects
+        append @newline & @boldon & "Aspects: " & @boldoff
+        tagexpr = "component.Aspect"
+        call sbaspects
+        
+        ~output attributes
+        ~append @newline & @boldon & "Attributes: " & @boldoff
+        ~tagexpr = "component.Attribute"
+        ~call sbtraits
+
+        ~output skills
+        call sbskills
+
+        ~output kung fu
+        append @newline
+        call sbkungfu
+        
+        ~output special abilities
+        ~append @boldon & "Special Abilities: " & @boldoff
+        ~tagexpr = "component.Ability"
+        ~call sbtraits
+
+        ~output stunts
+        call sbstunts
+        
+        ~output derived traits
+        foreach pick in hero where "component.Derived" sortas explicit
+          append @boldon & eachpick.field[name].text & ": " & @boldoff & eachpick.field[trtFinal].text & @newline
+          nexteach
+
+        ~output weapons/attacks
+        ~call sbweapons
+
+        ~output armor
+        ~call sbarmor
+        append @newline
+        
+        ]]></synthesize>
+      </dossier_text>
+    </dossier>
+
+
+  </document>

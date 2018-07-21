@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the assortment of advances that can be selected by actors as
+      their experience accrues.
+-->
+
+<document signature="Hero Lab Data">
+
+  <thing
+    id="advMstFrm"
+    name="Master A Form"
+    compset="Advance"
+    description="Become Master at chosen form.">
+    <fieldval field="advAction" value="Form to Master"/>
+    <fieldval field="advDynamic" value="component.Form"/>
+    <tag group="Advance" tag="Notation"/>
+    <!-- Modify tagexpr to deny abilities that have already been added to the character -->
+    <eval index="1" phase="Render" priority="1000">
+      <before name="Assign Dynamic Tagexpr"/><![CDATA[
+      ~get the list of all abilities on the hero and assemble it as a list of precluded tags
+      var tagexpr as string
+      tagexpr = hero.tagids[HasForm.?," & "]
+      ~if there are any tags to exclude, append them to the tagexpr appropriately
+      field[advDynamic].text = splice(field[advDynamic].text,tagexpr," & ")
+      ]]></eval>
+    <eval index="2" phase="Final" priority="15000"><![CDATA[
+      ~get the text of the choice and match it to a form on the hero
+      var myChoice as string
+      
+      perform gizmo.findchild[none,"Advance.Gizmo"].setfocus
+      ~notify state.isfocus
+      doneif (state.isfocus = 0)
+      
+      myChoice = focus.field[name].text
+      ~notify myChoice
+      ]]></eval>
+      
+    <!-- Attach the child entity for tracking the advance -->
+    <child entity="Advance">
+      <tag group="Advance" tag="MustChoose"/>
+      </child>
+    </thing>
+    
+  <thing
+    id="advKFTech"
+    name="New K.F. Technique"
+    compset="Advance"
+    description="Select a new Technique of your choice.">
+    <fieldval field="advAction" value="New Technique"/>
+    <fieldval field="advDynamic" value="component.Tech"/>
+    <tag group="Advance" tag="AddNew"/>
+    <!-- Modify tagexpr to deny abilities that have already been added to the character -->
+    <eval index="1" phase="Render" priority="1000">
+      <before name="Assign Dynamic Tagexpr"/><![CDATA[
+      ~get the list of all abilities on the hero and assemble it as a list of precluded tags
+      var tagexpr as string
+      tagexpr = hero.tagids[HasTech.?," & !"]
+      ~if there are any tags to exclude, append them to the tagexpr appropriately
+      field[advDynamic].text = splice(field[advDynamic].text,tagexpr," & !")
+      ]]></eval>
+
+    <!-- Attach the child entity for tracking the advance -->
+    <child entity="Advance">
+      <tag group="Advance" tag="MustChoose"/>
+      </child>
+    </thing>
+
+  <thing
+    id="advKFForm"
+    name="New K.F. Form"
+    compset="Advance"
+    description="Select a new Form of your choice.">
+    <fieldval field="advAction" value="New Form"/>
+    <fieldval field="advDynamic" value="component.Form"/>
+    <tag group="Advance" tag="AddNew"/>
+    <!-- Modify tagexpr to deny abilities that have already been added to the character -->
+    <eval index="1" phase="Render" priority="1000">
+      <before name="Assign Dynamic Tagexpr"/><![CDATA[
+      ~get the list of all abilities on the hero and assemble it as a list of precluded tags
+      var tagexpr as string
+      tagexpr = hero.tagids[HasForm.?," & !"]
+      ~if there are any tags to exclude, append them to the tagexpr appropriately
+      field[advDynamic].text = splice(field[advDynamic].text,tagexpr," & !")
+      ]]></eval>
+
+    <!-- Attach the child entity for tracking the advance -->
+    <child entity="Advance">
+      <tag group="Advance" tag="MustChoose"/>
+      </child>
+    </thing>
+    
+  </document>

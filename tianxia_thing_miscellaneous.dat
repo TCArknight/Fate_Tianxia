@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+
+  <!-- Jianghu Rank resource to track the Martial Rank -->
+  <thing
+    id="resJian"
+    name="Jianghu Rank"
+    compset="Resource">
+
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+
+    <!-- Do NOT require this resource to be fully utilized -->
+    <tag group="Helper" tag="NoMinimum"/>
+
+    <!-- Use the starting XP plus the accrued XP as our maximum -->
+    <eval index="1" phase="Setup" priority="1000"><![CDATA[
+      field[resMax].value = 0
+      ]]></eval>
+    </thing>
+    
+  <!-- Movement resource to track the zones of movement -->
+  <thing
+    id="resMove"
+    name="Move"
+    compset="Resource">
+
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+
+    <!-- Do NOT require this resource to be fully utilized -->
+    <tag group="Helper" tag="NoMinimum"/>
+
+    <!-- Use the starting XP plus the accrued XP as our maximum -->
+    <eval index="1" phase="Setup" priority="1000"><![CDATA[
+      field[resMax].value = 0
+      ]]></eval>
+    </thing>
+
+  <!-- Resource to track the number of Kung Fu Forms -->
+  <thing
+    id="resForm"
+    name="Kung Fu Forms"
+    compset="Resource">
+
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+
+    <!-- Do NOT require this resource to be fully utilized -->
+    <tag group="Helper" tag="NoMinimum"/>
+
+    <!-- Use the starting XP plus the accrued XP as our maximum -->
+    <eval index="1" phase="Setup" priority="1000"><![CDATA[
+      field[resMax].value = 0
+      ]]></eval>
+    </thing>
+            
+  </document>

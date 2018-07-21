@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document signature="Hero Lab Structure">
+  <loadonce key="Tianxia Core Sources"/>
+
+<!--
+
+March 1, 2015 - Thomas Clegg (TCArknight)
+-Created New
+
+-->
+
+  <!-- ============================================== -->
+  <!-- SOURCES                                        -->
+  <!-- ============================================== -->
+
+  <!-- 
+    This is the primary Parent Source for Tianxia. Every other "parent" source will build upon this one.
+  -->
+  <source
+    id="srcTianxia"
+    name="Tianxia"
+    selectable="no"
+    parent="UserParent"
+    sortorder="1"
+    description="Tianxia ruleset from Vigilance Press.">
+  </source>
+
+</document>

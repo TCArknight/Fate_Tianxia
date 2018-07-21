@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains an assortment of things used solely for validation reporting.
+      Each thing has one or more "evalrule" scripts that verify facets of each actor
+      and report appropriate error messages if not satisfied.
+
+     If you prefer, you could instead have a small number of things with numerous
+     "evalrule" scripts associated with each. The approach used below is to have lots
+     of things with scripts targeted at a narrow purpose, but there is no reason you
+     couldn't have a few things with lots of scripts targeted as a wide range of
+     purposes. By having lots of separate things, the name of each can be leveraged
+     for use within the validation error report, which can often improve the clarity
+     and usefulness of the validation messages.
+-->
+
+<document signature="Hero Lab Data">
+
+  <!-- Validate facets of the nationality -->
+  <thing
+    id="valKungFu"
+    name="Kung Fu Forms"
+    compset="Simple">
+    <tag group="Helper" tag="Bootstrap"/>
+
+    <!-- Make sure that we have a race selected -->
+    <evalrule index="1" phase="Validate" priority="8000" message="One Technique required for each Kung Fu Form."><![CDATA[
+
+      ~one technique required for each form
+      var formcount as number
+      var techcount as number
+
+      foreach pick in hero from Form
+        formcount += 1
+        nexteach
+
+      foreach pick in hero from Tech
+        techcount += 1
+        nexteach
+
+      validif (formcount <= techcount)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[kungfu] = 0
+
+      ]]></evalrule>
+
+    </thing>
+
+    </document>
